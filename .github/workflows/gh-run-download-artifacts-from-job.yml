@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:                                                                      
       - run: |
-          echo "ACTIONS_RUNTIME_URL env var: ${{ env.ACTIONS_RUNTIME_URL }}"
+          echo "\`env\` context: $ENV_CONTEXT"
+        env:
+          ENV_CONTEXT: ${{ toJSON(env) }}
       - run: |
           echo "Hello, I'm a test artifact" >> artifact                      
       - uses: actions/upload-artifact@v3                                        
