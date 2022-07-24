@@ -1,0 +1,29 @@
+name: Get artifacts from job                                                    
+
+on: push
+
+jobs: 
+  upload-artifact:                                                              
+    runs-on: ubuntu-latest
+    steps:                                                                      
+      - run: echo "Hello, I'm a test artifact" >> artifact                      
+      - uses: actions/upload-artifact@v3                                        
+        with:                                                                   
+          name: artifact 
+          path: artifact
+  gh-run-download-artifact:
+    runs-on: ubuntu-latest
+    needs: [ upload-artifact ]
+    steps:
+      - run: |
+          gh run download --repo "${{ github.repository}}" --name artifact --dir . "${{ github.run_id }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}                             
+  download-artifact:                                                            
+    runs-on: ubuntu-latest
+    needs: [ upload-artifact ]
+    steps:
+      - uses: actions/download-artifact@v3                                      
+        with:
+          path: .                                                               
+          name: artifact
