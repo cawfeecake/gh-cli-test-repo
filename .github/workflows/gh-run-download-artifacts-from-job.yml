@@ -7,9 +7,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:                                                                      
       - run: |
-          echo "\`env\` context: $ENV_CONTEXT"
+          echo "\`github\` context: $CONTEXT"
         env:
-          ENV_CONTEXT: ${{ toJSON(env) }}
+          CONTEXT: ${{ toJSON(github) }}
+      - run: |
+          echo "\`env\` context: $CONTEXT"
+        env:
+          CONTEXT: ${{ toJSON(env) }}
+      - run: |
+          echo "\`jobs\` context: $CONTEXT"
+        env:
+          CONTEXT: ${{ toJSON(job) }}
+      - run: |
+          echo "\`steps\` context: $CONTEXT"
+        env:
+          CONTEXT: ${{ toJSON(steps) }}
+      - name: output all env vars
+        run: |
+          env
       - run: |
           echo "Hello, I'm a test artifact" >> artifact                      
       - uses: actions/upload-artifact@v3                                        
