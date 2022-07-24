@@ -1,6 +1,9 @@
 name: Get artifacts from job                                                    
 
-on: push
+on:
+  push:
+    paths:
+      - '.github/workflows/gh-run-download-artifacts-from-job.yml'
 
 jobs: 
   upload-artifact:                                                              
@@ -31,6 +34,19 @@ jobs:
         with:                                                                   
           name: artifact 
           path: artifact
+  observe-env-vars:
+    runs-on: ubuntu-latest
+    needs: [ upload-artifact ]
+    steps:
+      - run: |
+          echo "ACTIONS_RUNTIME_URL: $ACTIONS_RUNTIME_URL"
+          echo "GITHUB_RUN_ID: $GITHUB_RUN_ID"
+          echo "ACTIONS_RUNTIME_TOKEN: $ACTIONS_RUNTIME_TOKEN"
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            const runtimeUrl = process.env['ACTIONS_RUNTIME_URL']
+            console.log(runtimeUrl)
   gh-run-download-artifact:
     runs-on: ubuntu-latest
     needs: [ upload-artifact ]
