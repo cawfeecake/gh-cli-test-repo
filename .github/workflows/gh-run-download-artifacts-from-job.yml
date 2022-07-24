@@ -6,8 +6,10 @@ jobs:
   upload-artifact:                                                              
     runs-on: ubuntu-latest
     steps:                                                                      
-      - run: echo "ACTIONS_RUNTIME_URL env var: $ACTIONS_RUNTIME_URL"
-      - run: echo "Hello, I'm a test artifact" >> artifact                      
+      - run: |
+          echo "ACTIONS_RUNTIME_URL env var: $ACTIONS_RUNTIME_URL"
+      - run: |
+          echo "Hello, I'm a test artifact" >> artifact                      
       - uses: actions/upload-artifact@v3                                        
         with:                                                                   
           name: artifact 
