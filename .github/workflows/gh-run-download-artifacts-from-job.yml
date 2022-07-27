@@ -52,6 +52,7 @@ jobs:
     needs: [ upload-artifact ]
     steps:
       - run: |
+          sleep 300
           gh run download --repo "${{ github.repository}}" --name artifact --dir . "${{ github.run_id }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}                             
